@@ -28,26 +28,11 @@ export default function storeReducer(store, action = {}) {
         todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
       };
     case 'add_contact':
-      
-      const data = async ()=>{
-        const response = await fetch('https://playground.4geeks.com/contact/agendas/danloveper/contacts',{
-          method:'POST',
-          body: JSON.stringify(action.payload)
-        }
-        )
-        try{
-          const dataJson = reponse.json();
-          return dataJson
-        }
-        catch (e){
-          console.error(e);
-        }
-
-      }
+      const payload = action.payload;
 
       return {
         ...store,
-        contacts: [...store.contacts, data]
+        contacts: [...store.contacts, payload]
       }
 
     default:

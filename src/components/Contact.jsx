@@ -1,9 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import useGlobalReducer from '../hooks/useGlobalReducer';
 
 export const Contact = () => {
+
+    const {store, dispatch} = useGlobalReducer();
+
+    const data = async ()=>{
+        try{
+            const response = await fetch('https://playground.4geeks.com/contact/agendas/danloveper/contacts');
+            const data = await response.json();
+            console.log(data);
+            return data
+        }catch(e){
+            console.error('Error al obtener contactos: ', e)
+        }
+    }
+
+    useEffect(()=>{
+        data();
+    },[])
+
     return (
         <div className="container">
-            <div className="card w-100">
+
+            <div className="card mb-3 w-100">
                 <div className="row g-0">
                     <div className="col-md-4 d-flex justify-content-center">
                         <img src="https://picsum.photos/id/237/200/300" className="my-2 object-fit-cover rounded-circle" alt="..." style={{ width: "200px", height: "200px" }} />
