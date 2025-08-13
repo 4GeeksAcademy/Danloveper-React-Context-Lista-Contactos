@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const Contact = () => {
+export const Contacts = () => {
 
     const { store, dispatch } = useGlobalReducer();
 
@@ -30,7 +30,7 @@ export const Contact = () => {
                         <div key={contact.id} className="card mb-3 w-100">
                             <div className="row g-0">
                                 <div className="col-md-4 d-flex justify-content-center">
-                                    <img src="https://picsum.photos/id/237/200/300" className="my-2 object-fit-cover rounded-circle" alt="..." style={{ width: "200px", height: "200px" }} />
+                                    <img src="https://images.ctfassets.net/x7j9qwvpvr5s/43adRuY33iuCayAyMy3wTw/5545b174f876fc95ffcfff3d643c4d23/Ducati-MY25-Panigale-V4-overview-carousel-hero-link-1600x650-01.jpg" className="my-2 object-fit-cover rounded-circle" alt="..." style={{ width: "200px", height: "200px" }} />
                                 </div>
                                 <div className="col-md-4">
                                     <div className="card-body">
