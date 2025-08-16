@@ -1,14 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Link, useNavigate } from 'react-router-dom';
+import DeleteContact from './DeleteContact';
 
 export const Contacts = () => {
 
     const { store, dispatch } = useGlobalReducer();
+    const [showModal, setShowModal] = useState(false);
+    const [contactId, setContactId] = useState(undefined);
+    const baseUrlContacts = 'https://playground.4geeks.com/contact/agendas/danloveper/contacts'
 
     const getContacts = async () => {
         try {
-            const response = await fetch('https://playground.4geeks.com/contact/agendas/danloveper/contacts');
+            const response = await fetch(baseUrlContacts);
+            if (!response.ok) {
+                throw Error('Error de petición HTTP: ', response.status)
+            }
             const data = await response.json();
             console.log(data.contacts);
             dispatch({ type: 'set_contacts', payload: data.contacts });
@@ -18,9 +25,33 @@ export const Contacts = () => {
         }
     }
 
+    function handleOpenModal (contactId){
+        setShowModal(true);
+        setContactId(contactId);
+    }
+
+    function handleCancel (event) {
+        setShowModal(false);
+    }
+
+    const handleDeleteContact = async () =>{
+        const response = await fetch(`${baseUrlContacts}/${contactId}`,
+            {
+                method: 'DELETE',
+                headers: {'content-type': 'application/json'}
+            }
+        )
+        if (!response.ok){
+            throw Error ('Error en la petición HTTP: ', response.status)
+        }
+        setShowModal(false);
+        getContacts();
+    }
+
     useEffect(() => {
         getContacts();
     }, [])
+
 
     return (
         <div className="container">
@@ -45,7 +76,7 @@ export const Contacts = () => {
                                 <div className="col-md-4  d-flex align-items-center">
                                     <div className="card-body display-5 d-flex justify-content-around">
                                         <Link to={`/edit-contact/${contact.id}`}><i className="fa-solid fa-pencil"></i></Link>
-                                        <i className="fa-solid fa-trash-can"></i>
+                                        <i className="fa-solid fa-trash-can text-danger" onClick={()=>{handleOpenModal(contact.id)}}></i>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +85,7 @@ export const Contacts = () => {
                 })
             }
 
-
+            <DeleteContact show={showModal} onCancel={handleCancel} onDelete={handleDeleteContact} />
         </div>
     )
 }
